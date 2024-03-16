@@ -7,6 +7,8 @@ const register = {
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     phone: Joi.string().required(),
+    businessName: Joi.string().required(),
+    address: Joi.string().required(),
   }),
 };
 
