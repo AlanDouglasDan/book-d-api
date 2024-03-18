@@ -26,7 +26,7 @@ export const createBooking = async (
   }
 
   await createNotification({
-    body: "You just successfully booked an appointment with book-d",
+    body: `Appointment confirmation for ${date} by ${time}`,
     userId,
   });
 
