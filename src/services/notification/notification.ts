@@ -20,6 +20,7 @@ export const fetchNotifications = async (userId: string): Promise<any> => {
   const details = {
     Collection: Notifications,
     find: { userId },
+    sort: { createdAt: -1 },
   };
 
   const notifications = await getAllItems(details);
