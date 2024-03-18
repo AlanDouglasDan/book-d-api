@@ -4,7 +4,8 @@ export interface fields {
   id: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   date: string;
-  time: string;
+  startTime: string;
+  endTime: string;
 }
 
 export type bookingModel = mongoose.Document & fields;
@@ -21,7 +22,11 @@ const bookingSchema = new Schema(
       type: String,
       required: true,
     },
-    time: {
+    startTime: {
+      type: String,
+      required: true,
+    },
+    endTime: {
       type: String,
       required: true,
     },

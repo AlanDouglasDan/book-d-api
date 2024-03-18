@@ -13,12 +13,12 @@ export const createBooking = async (
   body: any,
   userId: string
 ): Promise<any> => {
-  const { date, time } = body;
+  const { date, startTime, endTime } = body;
 
   const details = {
     Collection: Booking,
-    find: { date, time },
-    data: { date, time, userId },
+    find: { date },
+    data: { date, startTime, endTime, userId },
   };
   const existingBooking = await getItem(details);
   if (existingBooking) {
@@ -26,7 +26,7 @@ export const createBooking = async (
   }
 
   await createNotification({
-    body: `Appointment confirmation for ${date} by ${time}`,
+    body: `You're now available on ${date} from ${startTime} - ${endTime}`,
     userId,
   });
 
@@ -51,17 +51,22 @@ export const updateBooking = async (
   body: any,
   userId: string
 ): Promise<any> => {
-  const { date, time, id } = body;
+  const { date, id, ...rest } = body;
 
   const details = {
     Collection: Booking,
     find: { _id: id, userId },
-    update: { date, time },
+    update: { date, ...rest },
   };
   const existingBooking = await getItem(details);
   if (!existingBooking) {
     throw new ApiError(404, "Booking history not found");
   }
+
+  await createNotification({
+    body: `Your availability on ${date} is now from ${existingBooking.startTime} - ${existingBooking.endTime}`,
+    userId,
+  });
 
   const newBooking = await updateItem(details);
 
@@ -82,6 +87,11 @@ export const removeBooking = async (
   if (!existingBooking) {
     throw new ApiError(404, "Booking history not found");
   }
+
+  await createNotification({
+    body: `You have successfully cleared your availability on ${existingBooking.date} from ${existingBooking.startTime} - ${existingBooking.endTime}`,
+    userId,
+  });
 
   const removedBooking = await deleteItem(details);
 
