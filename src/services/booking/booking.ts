@@ -39,6 +39,7 @@ export const fetchBookings = async (userId: string): Promise<any> => {
   const details = {
     Collection: Booking,
     find: { userId },
+    sort: { createdAt: -1 },
   };
 
   const bookings = await getAllItems(details);
