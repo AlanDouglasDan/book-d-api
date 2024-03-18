@@ -18,7 +18,7 @@ router.get(
   bookingController.get
 );
 
-router.patch(
+router.put(
   "/",
   auth.verifyToken,
   validate(bookingValidation.update),
