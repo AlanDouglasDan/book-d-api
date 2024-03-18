@@ -7,6 +7,7 @@ import {
   deleteItem,
 } from "../../db/db-queries";
 import { ApiError } from "../../helpers";
+import { createNotification } from "../notification";
 
 export const createBooking = async (
   body: any,
@@ -23,6 +24,11 @@ export const createBooking = async (
   if (existingBooking) {
     throw new ApiError(409, "Date Already reserved");
   }
+
+  await createNotification({
+    body: "You just successfully booked an appointment with book-d",
+    userId,
+  });
 
   const newBooking = await addItem(details);
 
